@@ -22,8 +22,8 @@ Realizar cambios en la solicitud y los objetos de respuesta.
 Finalizar el ciclo de solicitud/respuestas.
 Invocar la siguiente función de middleware en la pila. 
 */
-router.use('/Razas',razaRoute);
+router.use('/dogs', razaRoute);
 
-router.use('/Temperamentos',tempRoute);
+router.use('/temperament', tempRoute);
 
 module.exports = router;
