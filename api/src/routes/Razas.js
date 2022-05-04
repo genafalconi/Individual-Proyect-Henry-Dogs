@@ -1,8 +1,7 @@
 const { Router } = require('express');
 const { Raza, Temperamento } = require('../db');
-const { Op } = require('sequelize');
 const axios = require('axios');
-const { dbSend } = require('../tools')
+
 require('dotenv').config();
 
 const { API_KEY } = process.env;
@@ -18,7 +17,6 @@ router.get('/', async (req, res, next) => {
         const razasDb = await Raza.findAll({ // breeds in the db
             include: Temperamento
         });
-        console.log(razasDb[0]);
         const razasFront = []; // where gonna be the breeds 
         const { name } = req.query; // name from query if exists
 
@@ -46,7 +44,7 @@ router.get('/', async (req, res, next) => {
                 }
             });
             if (razasFront.length) return res.json(razasFront);
-            else return res.json({ error: 'No existe ninguna raza con ese nombre' });
+            else return res.status(404).json({ error: 'No existe ninguna raza con ese nombre' });
         } else { // If name not exists bring all breeds
             razasApi.forEach(elem => {
                 razasFront.push({
@@ -71,7 +69,7 @@ router.get('/', async (req, res, next) => {
             }
         }
         if (razasFront.length) return res.json(razasFront);
-        else return res.json({ error: 'No hay razas' })
+        else return res.status(404).json({ error: 'No hay razas' })
     } catch (error) {
         next(error)
     }
@@ -88,12 +86,12 @@ router.post('/dog', async (req, res, next) => {
         const { name, height, weight, lifeSpan, img, temperament } = req.body;
         await razasApi.forEach(elem => {
             if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                return res.json({ error: 'La raza ya existe' })
+                return res.status(404).json({ error: 'La raza ya existe' })
             }
         })
         await razasDb.forEach(elem => {
             if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                return res.json({ error: 'La raza ya existe' })
+                return res.status(404).json({ error: 'La raza ya existe' })
             }
         })
         const dog = await Raza.create({
@@ -157,7 +155,7 @@ router.get('/:idRaza', async (req, res, next) => {
                 });
             })
             if (raza.length) return res.json(showRaza);
-            else return res.json({ error: 'No hay razas' })
+            else return res.status(404).json({ error: 'No hay razas' })
         } else {
             const razasDb = await Raza.findByPk(idRaza, {
                 include: Temperamento

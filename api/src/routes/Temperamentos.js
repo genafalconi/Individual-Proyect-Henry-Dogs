@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Temperamento } = require('../db');
+const { Raza, Temperamento } = require('../db');
 const axios = require('axios');
 const e = require('express');
 
@@ -11,8 +11,11 @@ router.get('/', async (req, res, next) => {
         const razasApi = petition.data;
         const tempFro = []
 
+        const { temperament } = req.query;
+        const tempSearch = [];
+
         await razasApi.forEach(elem => {
-            if(elem.temperament){
+            if (elem.temperament) {
                 const tempSep = elem.temperament.split(', ')
                 tempFro.push(tempSep)
             }
@@ -22,13 +25,44 @@ router.get('/', async (req, res, next) => {
             return allTemp.indexOf(val) === ind;
         })
 
-        await filterTemp.forEach(elem => {
-            Temperamento.create({
-                nameTemp: elem
+        filterTemp.forEach(elem => {
+            Temperamento.findOrCreate({
+                where: {
+                    nameTemp: elem
+                }
             })
         })
-        if (filterTemp.length) return res.json(filterTemp);
-        else return res.json({error: 'Error de carga'});
+        if (temperament) {
+            razasApi.forEach(elem => {
+                if (elem.temperament) {
+                    if (elem.temperament.toLowerCase().includes(temperament.toLowerCase())) {
+                        tempSearch.push({
+                            id: elem.id,
+                            name: elem.name,
+                            weight: elem.weight.metric,
+                            img: elem.image.url,
+                            temperament: elem.temperament
+                        })
+                    }
+                }
+            });
+
+            if (tempSearch.length) return res.json(tempSearch);
+            else return res.status(404).json({ error: 'No existe ningun temperamento con ese nombre' });
+        }
+
+        razasApi.forEach(elem => {
+            tempSearch.push({
+                id: elem.id,
+                name: elem.name,
+                weight: elem.weight.metric,
+                img: elem.image.url,
+                temperament: elem.temperament
+            })
+        })
+
+        if (tempSearch.length) return res.json(tempSearch);
+        else return res.status(404).json({ error: 'Error de carga' });
     } catch (error) {
         next(error)
     }
