@@ -1,0 +1,12 @@
+.butt {
+    font-family: 'Radio Canada', sans-serif;
+    font-size: large;
+}
+
+.butt:hover {
+    background: #660708;
+    font-size: large;
+    color: whitesmoke;
+    border-radius: 5px;
+    border-color: whitesmoke;
+}

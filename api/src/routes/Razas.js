@@ -8,126 +8,98 @@ const { API_KEY } = process.env;
 
 const router = Router();
 
-router.get('/', async (req, res, next) => {
-    try {
-        // search in api 
-        const petition = await axios.get('https://api.thedogapi.com/v1/breeds');
-        const razasApi = petition.data;
-        // temperaments in db
-        const razasDb = await Raza.findAll({ // breeds in the db
-            include: Temperamento
-        });
-        const razasFront = []; // where gonna be the breeds 
-        const { name } = req.query; // name from query if exists
+const getApiInfo = async () => {
+    const apiUrl = await axios.get('https://api.thedogapi.com/v1/breeds');
+    const apiData = await apiUrl.data.map(elem => {
+        return {
+            id: elem.id,
+            name: elem.name,
+            weight: elem.weight.metric,
+            height: elem.height.metric,
+            img: elem.image.url,
+            lifeSpan: elem.life_span,
+            temperament: elem.temperament
+        }
+    });
+    return apiData;
+}
 
-        if (name) { // if name exists search in api and db the breed with that name
-            razasApi.forEach(elem => {
-                if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                    razasFront.push({
-                        id: elem.id,
-                        name: elem.name,
-                        weight: elem.weight.metric,
-                        img: elem.image.url,
-                        temperament: elem.temperament
-                    })
-                }
-            });
-            razasDb.forEach(elem => {
-                if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                    razasFront.push({
-                        id: elem.id,
-                        name: elem.name,
-                        weight: elem.weight,
-                        img: elem.img,
-                        temperaments: elem.temperamentos.temperament.nameTemp
-                    })
-                }
-            });
-            if (razasFront.length) return res.json(razasFront);
-            else return res.status(404).json({ error: 'No existe ninguna raza con ese nombre' });
-        } else { // If name not exists bring all breeds
-            razasApi.forEach(elem => {
-                razasFront.push({
-                    id: elem.id,
-                    name: elem.name,
-                    weight: elem.weight.metric,
-                    img: elem.image.url,
-                    temperament: elem.temperament
-                })
-            });
-            if (razasDb) {
-                razasDb.forEach(elem => {
-                    razasFront.push({
-                        id: elem.id,
-                        name: elem.name,
-                        weight: elem.weight,
-                        img: elem.img,
-                        temperament: elem.temperamentos[0].nameTemp
-                    })
-                })
-
+const getDbInfo = async () => {
+    return await Raza.findAll({
+        include: {
+            model: Temperamento,
+            attributes: ['nameTemp'],
+            through: {
+                attributes: []
             }
         }
-        if (razasFront.length) return res.json(razasFront);
-        else return res.status(404).json({ error: 'No hay razas' })
+    })
+}
+
+const getAllRazas = async () => {
+    const apiInfo = await getApiInfo();
+    const dbInfo = await getDbInfo();
+    const allInfo = apiInfo.concat(dbInfo);
+    return allInfo;
+}
+
+router.get('/', async (req, res) => {
+    try {
+        const { name } = req.query;
+        let allRazas = await getAllRazas();
+
+        if (name) { // if name exists search in api and db the breed with that name
+            let resRazas = await allRazas.filter(elem => elem.name.toLowerCase().includes(name.toLowerCase()));
+
+            res.status(200).json(resRazas);
+            // if (resRazas.length) res.status(200).json(resRazas);
+            // else return res.status(404).json({ error: 'There is not a breed with that name' });
+        } else {
+            return res.json(allRazas);
+        }
     } catch (error) {
-        next(error)
+        console.log(error)
     }
 })
 
 router.post('/dog', async (req, res, next) => {
     try {
-        const petition = await axios.get('https://api.thedogapi.com/v1/breeds');
-        const razasApi = petition.data;
-        // temperaments in db
-        const razasDb = await Raza.findAll({ // breeds in the db
-            include: Temperamento
-        });
-        const { name, height, weight, lifeSpan, img, temperament } = req.body;
-        await razasApi.forEach(elem => {
+        const { name, height_min, height_max, weight_min, weight_max, img, lifeSpan, temperament } = req.body;
+        const allRazas = await getAllRazas();
+
+        await allRazas.forEach(elem => {
             if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                return res.status(404).json({ error: 'La raza ya existe' })
+                return res.status(404).json({ error: 'The breed already exists' })
             }
         })
-        await razasDb.forEach(elem => {
-            if (elem.name.toLowerCase().includes(name.toLowerCase())) {
-                return res.status(404).json({ error: 'La raza ya existe' })
-            }
-        })
-        const dog = await Raza.create({
+
+        const newRaza = await Raza.create({
             name,
-            height,
-            weight,
-            lifeSpan,
+            height_min,
+            height_max,
+            weight_min,
+            weight_max,
             img,
-            temperament
+            lifeSpan
         });
-
-        if (temperament) {
-            const temp = temperament.toLowerCase();
-            await Temperamento.findOrCreate({
-                where: {
-                    nameTemp: temp
-                }
-            })
-            const idTempDb = await Temperamento.findAll({
-                where: {
-                    nameTemp: temp
-                }
-            })
-            const idTemp = [];
-            idTempDb.forEach(elem => {
-                idTemp.push(elem.dataValues.id);
-            })
-
-            await dog.setTemperamentos(idTemp);
-
-            const resp = await Raza.findByPk(dog.dataValues.id, {
-                include: Temperamento
-            })
-            return res.json(resp);
+        
+        let idTemp;
+        for (let i = 0; i < temperament.length; i++ ) {
+            try {
+                idTemp = await Temperamento.findAll({
+                    where: {
+                        nameTemp: temperament[i]
+                    },
+                    attributes: ['id']
+                })
+                newRaza.addTemperamento(idTemp)
+            } catch (error) {
+                console.log(error)
+            }
         }
-        return res.json({ message: 'Raza creada' })
+
+        if (newRaza) return res.status(200).json(newRaza);
+        else return res.json({ message: 'Error creating breed' })
     } catch (error) {
         next(error);
     }
@@ -136,38 +108,25 @@ router.post('/dog', async (req, res, next) => {
 router.get('/:idRaza', async (req, res, next) => {
     try {
         const { idRaza } = req.params;
-        const showRaza = [];
-        if (idRaza.length < 5 && typeof parseInt(idRaza) === 'number') {
-            const petition = await axios.get('https://api.thedogapi.com/v1/breeds');
-            const razasApi = petition.data;
-            const raza = razasApi.filter(elem => {
-                return elem.id === parseInt(idRaza);
-            });
-            await raza.forEach(elem => {
-                showRaza.push({
-                    id: elem.id,
-                    name: elem.name,
-                    height: elem.height.metric,
-                    weight: elem.weight.metric,
-                    img: elem.image.url,
-                    lifeSpan: elem.life_span,
-                    temperament: elem.temperament
-                });
-            })
-            if (raza.length) return res.json(showRaza);
-            else return res.status(404).json({ error: 'No hay razas' })
+        const allRazas = await getAllRazas();
+
+        if (idRaza) {
+            let razaId = await allRazas.filter(elem => elem.id == idRaza)
+
+            if (razaId.length) return res.json(razaId)
+            else return res.json({ message: 'There is not a breed with that id' });
         } else {
-            const razasDb = await Raza.findByPk(idRaza, {
-                include: Temperamento
+            const razaIdDb = await Raza.findByPk(idRaza, {
+                include: {
+                    model: Temperamento,
+                    attributes: ['nameTemp'],
+                    through: {
+                        attributes: []
+                    }
+                }
             })
-            showRaza.push({
-                id: razasDb.id,
-                name: razasDb.name,
-                weight: razasDb.weight,
-                img: razasDb.img,
-                temperament: razasDb.temperamentos[0].nameTemp
-            })
-            return res.json(showRaza);
+            if (razaIdDb.length) return res.json(razaIdDb)
+            else return res.json({ message: 'There is not a breed with that id' });
         }
     } catch (error) {
         next(error);

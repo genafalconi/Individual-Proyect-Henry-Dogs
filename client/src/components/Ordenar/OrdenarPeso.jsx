@@ -8,7 +8,6 @@ export default function OrdenarPeso() {
         dispatch(ordPeso(event.target.value))
     }
     return <div>
-        <p>Peso</p>
         <select name="ordenes" onChange={onChange}>
             <option>Select</option>
             <option value={ASCENDENTE}>Ascendente</option>

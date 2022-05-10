@@ -1,0 +1,83 @@
+.containerCreate {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.imageCreate {
+    max-width: 60%;
+    max-height: 60%;
+    border-radius: 10px;
+}
+
+.textCreate {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 40px;
+    color: whitesmoke;
+    text-shadow: 3px 3px 3px black;
+}
+
+input {
+    border: 1px solid #fffdfd;
+    border-radius: 5px 5px 5px 5px;
+    color: black;
+    font-size: 12px;
+    padding: 5px;
+}
+
+select {
+    font-family: 'Radio Canada', sans-serif;
+}
+
+.tempList {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+ul {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    color: #ced4da;
+    font-weight: bolder;
+    padding: 5px;
+    border: 1px groove white;
+}
+
+
+button {
+    font-family: 'Radio Canada', sans-serif;
+}
+
+button:hover {
+    background: #1b4332;
+    font-size: 16px;
+    color: whitesmoke;
+    border-radius: 5px;
+    border-color: whitesmoke;
+}
+
+span {
+    color: red;
+    font-weight: bold;
+}
+
+.buttonsFinal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.backButt:hover {
+    background-color: yellow;
+    color: black;
+}

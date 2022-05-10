@@ -5,10 +5,23 @@ const e = require('express');
 
 const router = Router();
 
+const getApiTemp = async () => {
+    const apiUrl = await axios.get('https://api.thedogapi.com/v1/breeds');
+    const apiData = await apiUrl.data.map(elem => {
+        return {
+            id: elem.id,
+            name: elem.name,
+            weight: elem.weight.metric,
+            img: elem.image.url,
+            temperament: elem.temperament
+        }
+    });
+    return apiData;
+}
+
 router.get('/', async (req, res, next) => {
     try {
-        const petition = await axios.get('https://api.thedogapi.com/v1/breeds');
-        const razasApi = petition.data;
+        const razasApi = await getApiTemp();
         const tempFro = []
 
         const { temperament } = req.query;
@@ -39,29 +52,19 @@ router.get('/', async (req, res, next) => {
                         tempSearch.push({
                             id: elem.id,
                             name: elem.name,
-                            weight: elem.weight.metric,
-                            img: elem.image.url,
+                            weight: elem.weight,
+                            img: elem.img,
                             temperament: elem.temperament
                         })
                     }
                 }
             });
-
-            if (tempSearch.length) return res.json(tempSearch);
-            else return res.status(404).json({ error: 'No existe ningun temperamento con ese nombre' });
+            return res.json(tempSearch);
+            // if (tempSearch.length) return res.json(tempSearch);
+            // else return res.status(404).json({ error: 'No existe ningun temperamento con ese nombre' });
         }
 
-        razasApi.forEach(elem => {
-            tempSearch.push({
-                id: elem.id,
-                name: elem.name,
-                weight: elem.weight.metric,
-                img: elem.image.url,
-                temperament: elem.temperament
-            })
-        })
-
-        if (tempSearch.length) return res.json(tempSearch);
+        if (filterTemp.length) return res.json(filterTemp);
         else return res.status(404).json({ error: 'Error de carga' });
     } catch (error) {
         next(error)

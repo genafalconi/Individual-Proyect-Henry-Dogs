@@ -4,11 +4,13 @@ import { ordAlfabetic } from "../../store/actions";
 
 export default function OrdenarAlfa() {
     const dispatch = useDispatch();
+    
     function onChange(event) {
+        event.preventDefault();
         dispatch(ordAlfabetic(event.target.value));
     }
+
     return <div>
-        <p>Alfabetico</p>
         <select name="ordenes" onChange={onChange}>
             <option>Select</option>
             <option value={ASCENDENTE}>Ascendente</option>

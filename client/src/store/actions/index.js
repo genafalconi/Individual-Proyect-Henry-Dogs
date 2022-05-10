@@ -4,8 +4,12 @@ export const SEARCH_RAZAS = 'SEARCH_RAZAS';
 export const SEARCH_TEMPERAMENTS = 'SEARCH_TEMPERAMENTS';
 export const ORD_ALFABETIC = 'ORD_ALFABETIC';
 export const ORD_PESO = 'ORD_PESO';
+export const DETAIL_RAZA = 'DETAIL_RAZA';
+export const CREATE_RAZA = 'CREATE_RAZA';
+export const GET_TEMPERAMENT = 'GET_TEMPERAMENT';
 
 const routeRaza = 'http://localhost:3001/dogs';
+const routeRazaCreate = 'http://localhost:3001/dogs/dog';
 const routeTemp = 'http://localhost:3001/temperament';
 
 export function axiosRazas() {
@@ -42,7 +46,6 @@ export function searchTemperamentos(search) {
                 type: SEARCH_TEMPERAMENTS,
                 payload: temperament.data
             });
-            console.log(temperament) // seguir con ruta temperaments
         } catch (error) {
             console.log(error);
         }
@@ -61,4 +64,41 @@ export function ordPeso(order) {
         type: ORD_PESO,
         payload: order
     }
+}
+
+export function detailRaza(razaId) {
+    return (async (dispatch) => {
+        try {
+            const raza = await axios.get(routeRaza + '/' + razaId);
+            dispatch({
+                type: DETAIL_RAZA,
+                payload: raza.data
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
+
+export function getTemperaments() {
+    return (async (dispatch) => {
+        axios.get(routeTemp)
+        .then((temp) => {
+            dispatch({
+                type: GET_TEMPERAMENT,
+                payload: temp.data
+            })
+        }).catch((error) => { console.log(error) })
+    })
+}
+
+export function createRaza(payload) {
+    return (async (dispatch) => {
+        try {
+            const newRaza = await axios.post(routeRazaCreate,payload);
+            return newRaza;
+        } catch (error) {
+            console.log(error)
+        }
+    })
 }

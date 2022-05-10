@@ -1,0 +1,14 @@
+.search {
+    display: flex;
+    position: sticky;
+    top: 0; 
+    justify-content: space-between;
+    font-size: larger;
+    font-weight: bold;
+    background-color: #00111a;
+    padding: 20px 10px 20px 10px;
+    border-radius: 20px;
+}
+.create {
+    float: left;
+}

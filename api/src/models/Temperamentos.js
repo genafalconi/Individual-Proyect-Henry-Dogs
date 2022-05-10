@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
     },
     nameTemp: {
         type: DataTypes.STRING,
+        allowNull: false
     }
   });
 };

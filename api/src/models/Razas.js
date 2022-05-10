@@ -16,18 +16,26 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true
     },
-    height: {
+    height_min: {
       type: DataTypes.FLOAT,
       allowNull: false
     },
-    weight: {
+    height_max: {
       type: DataTypes.FLOAT,
       allowNull: false
     },
-    lifeSpan: {
-      type: DataTypes.STRING
+    weight_min: {
+      type: DataTypes.FLOAT,
+      allowNull: false
+    },
+    weight_max: {
+      type: DataTypes.FLOAT,
+      allowNull: false
     },
     img: {
+      type: DataTypes.STRING
+    },
+    lifeSpan: {
       type: DataTypes.STRING
     }
   });

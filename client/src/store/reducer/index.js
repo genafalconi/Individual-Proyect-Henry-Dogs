@@ -1,10 +1,9 @@
 import { ASCENDENTE } from "../../Constants/order";
-import { AXIOS_RAZAS, SEARCH_RAZAS, SEARCH_TEMPERAMENTS, ORD_ALFABETIC, ORD_PESO } from "../actions";
+import { AXIOS_RAZAS, SEARCH_RAZAS, SEARCH_TEMPERAMENTS, ORD_ALFABETIC, ORD_PESO, DETAIL_RAZA, CREATE_RAZA, GET_TEMPERAMENT } from "../actions";
 
 const initialState = {
-    razas: [],
     filtRazas: [],
-    newRazas: []
+    temperaments: []
 }
 
 export default function reducer(state = initialState, action) {
@@ -12,7 +11,6 @@ export default function reducer(state = initialState, action) {
         case AXIOS_RAZAS:
             return {
                 ...state,
-                razas: action.payload,
                 filtRazas: action.payload
             }
         case SEARCH_RAZAS:
@@ -26,40 +24,78 @@ export default function reducer(state = initialState, action) {
                 filtRazas: action.payload
             }
         case ORD_ALFABETIC:
-            let orderAlf = [...state.razas]
-            orderAlf = orderAlf.sort((a, b) => {
-                if (a.name < b.name) {
-                    return action.payload === ASCENDENTE ? -1 : 1;
-                }
+            let names = [...state.filtRazas];
+
+            let sortName = action.payload === ASCENDENTE ?
+            names.sort((a, b) => {
                 if (a.name > b.name) {
-                    return action.payload === ASCENDENTE ? 1 : -1;
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+                return 0;
+            }) 
+            : names.sort((a, b) => {
+                if (a.name > b.name) {
+                    return -1;
+                }
+                if (a.name < b.name) {
+                    return 1;
                 }
                 return 0;
             })
             return {
                 ...state,
-                filtRazas: orderAlf
+                filtRazas: sortName
             }
         case ORD_PESO:
-            let orderPeso = [...state.razas]
-            orderPeso = orderPeso.sort((a, b) => {
-                if (parseInt(a.weight) < parseInt(b.weight)) {
-                    return action.payload === ASCENDENTE ? -1 : 1;
+            let pesos = [...state.filtRazas];
+
+            let sortPeso = action.payload === ASCENDENTE ?
+            pesos.sort((a, b) => {
+                let pesoA = parseInt(a.weight);
+                let pesoB = parseInt(b.weight);
+                if (pesoA > pesoB) {
+                    return 1;
                 }
-                if (parseInt(a.weight) > parseInt(b.weight)) {
-                    return action.payload === ASCENDENTE ? 1 : -1;
-                }
-                if (typeof a.weight === 'string' || typeof b.weight === 'string') {
-                    return -1;
-                }
-                if (isNaN(a.weight) || isNaN(b.weight)) {
+                if (pesoA < pesoB) {
                     return -1;
                 }
                 return 0;
+            }) 
+            : pesos.sort((a, b) => {
+                let pesoA = parseInt(a.weight);
+                let pesoB = parseInt(b.weight);
+                if (pesoA > pesoB) {
+                    return -1;
+                }
+                if (pesoA < pesoB) {
+                    return 1;
+                }
+                return 0;
             })
+
             return {
                 ...state,
-                filtRazas: orderPeso
+                filtRazas: sortPeso
+            }
+
+        case DETAIL_RAZA:
+            return {
+                ...state,
+                filtRazas: action.payload
+            }
+
+        case GET_TEMPERAMENT:
+            return {
+                ...state,
+                temperaments: action.payload
+            }
+
+        case CREATE_RAZA:
+            return {
+                ...state
             }
         default:
             return state

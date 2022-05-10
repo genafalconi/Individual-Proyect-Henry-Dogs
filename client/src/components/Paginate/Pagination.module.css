@@ -1,0 +1,17 @@
+.index {
+    text-align: center;
+}
+
+.index ul {
+    display: inline-block;
+}
+
+.list {
+    display: inline-block;
+    color: black;
+}
+
+.a {
+    color: whitesmoke;
+    text-decoration: none;
+}

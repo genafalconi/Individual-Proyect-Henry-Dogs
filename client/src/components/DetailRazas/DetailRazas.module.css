@@ -1,0 +1,6 @@
+.imgRaza {
+    max-width: 400px;
+    max-height: 440px;
+    border-radius: 10px;
+    box-shadow: inset 10px 10px 50px #fff;
+}
