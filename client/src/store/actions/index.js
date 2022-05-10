@@ -8,9 +8,9 @@ export const DETAIL_RAZA = 'DETAIL_RAZA';
 export const CREATE_RAZA = 'CREATE_RAZA';
 export const GET_TEMPERAMENT = 'GET_TEMPERAMENT';
 
-const routeRaza = 'http://localhost:3001/dogs';
-const routeRazaCreate = 'http://localhost:3001/dogs/dog';
-const routeTemp = 'http://localhost:3001/temperament';
+const routeRaza = '/dogs';
+const routeRazaCreate = '/dogs/dog';
+const routeTemp = '/temperament';
 
 export function axiosRazas() {
     return ((dispatch) => { //dispach give us an await to get the data

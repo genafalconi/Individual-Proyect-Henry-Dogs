@@ -16,15 +16,14 @@ export default function Busqueda() {
         dispatch(searchTemperamentos(search))
         setSearch('')
     }
-
-    const error = (event) => {
-        return <div>
-            No pasaste parametro
-        </div>
-    };
+    
+    const errorValue = (event) => {
+        event.preventDefault();
+        setSearch('')
+    }
 
     return <div>
-        <form onSubmit={!search ? error : onSubmit}>
+        <form onSubmit={search ? onSubmit : errorValue}>
             <label>Search temperament </label>
             <input className={styles.fieldText} type="text" placeholder='Temperament...' onChange={onChange} value={search} />
             <label> - </label>

@@ -5,7 +5,7 @@ export default function Raza({ idRaza, name, weight, img, temperament }) {
     function handleClick(event) {
         event.preventDefault();
         const id = event.target.value;
-        window.location = 'http://localhost:3000/dogs/' + id
+        window.location = '/dogs/' + id
         return id && window.location;
     }
 

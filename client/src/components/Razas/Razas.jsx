@@ -63,9 +63,9 @@ export default function Razas() {
             </div>
             <br />
             <div className={styles.grid}>
-                {currRazas ? currRazas.map((r) => {
+                {currRazas.map((r) => {
                     return <Raza key={r.idRaza} idRaza={r.id} name={r.name} weight={r.weight ? r.weight : r.weight = r.weight_min + ' - ' + r.weight_max} img={r.img} temperament={r.temperament ? r.temperament : r.temperamentos?.map(e => e.nameTemp + ', ')} />
-                }) : <h2>Loading...</h2>}
+                })}
             </div>
             <div>
                 {currRazas.length === 0 && <div>

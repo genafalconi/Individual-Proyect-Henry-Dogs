@@ -44,11 +44,14 @@ export default function CreateRaza() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        if (Object.keys(error).length === 0) {
+        if (input.name.length === 0) {
+            setError(1)
+            alert('Error: Enter the data')
+        } else if (Object.keys(error).length === 0) {
             dispatch(createRaza(input));
             alert('Breed created');
         } else {
-            alert('Error')
+            alert('Error: Correct your inputs')
         }
         setInput({
             name: '',

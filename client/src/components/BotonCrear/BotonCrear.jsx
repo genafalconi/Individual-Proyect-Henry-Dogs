@@ -1,14 +1,9 @@
 import styles from './BotonCrear.module.css';
+import { Link } from 'react-router-dom';
 
 export default function BotonCrear(){
 
-    function handleClick(event){
-        event.preventDefault();
-        window.location = 'http://localhost:3000/dogs/dog'
-        return window.location;
-    }
-
     return <div>
-        <button className={styles.butt} onClick={handleClick}>Create Breed</button>
+        <Link to='/dogs/dog'><button className={styles.butt}>Create Breed</button></Link>
     </div>
 }

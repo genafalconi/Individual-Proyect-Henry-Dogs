@@ -8,7 +8,7 @@ export default function DetailRazas() {
     const [razaId, setRazaId] = useState(null)
 
     useEffect(() => { // fill the state when the component is mount
-        axios.get('http://localhost:3001/dogs/' + id)
+        axios.get('/dogs/' + id)
             .then((res) => {
                 setRazaId(res.data)
             })
