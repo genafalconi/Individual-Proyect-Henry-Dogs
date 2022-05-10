@@ -7,6 +7,11 @@ import styles from './PagRazas.module.css';
 export default function PagRazas() {
 
     return <div className={styles.pagRaza}>
+        <div>
+            <a href='/' className={styles.messWelcome}>
+                <h1>WELCOME TO MY DOGS PI</h1>
+            </a>
+        </div>
         <div className={styles.search}>
             <BusquedaRaza key={'busqRaza'} />
             <BusquedaTemp key={'busqTemp'} />

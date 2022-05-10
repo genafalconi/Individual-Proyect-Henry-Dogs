@@ -1,3 +1,9 @@
+.messWelcome {
+    color: whitesmoke;
+    text-decoration: none;
+    text-shadow: 5px 5px 5px #001523;
+}
+
 .search {
     display: flex;
     position: sticky;

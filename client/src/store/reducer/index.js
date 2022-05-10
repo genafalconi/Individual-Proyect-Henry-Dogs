@@ -51,11 +51,18 @@ export default function reducer(state = initialState, action) {
             }
         case ORD_PESO:
             let pesos = [...state.filtRazas];
+            let nanArr = []
+            let ordPeso = []
 
+            pesos.forEach(elem => {
+                if(elem.weight ? elem.weight !== 'NaN' : elem.weight_min !== 'NaN') ordPeso.push(elem)
+                else nanArr.push(elem)
+            })
+            
             let sortPeso = action.payload === ASCENDENTE ?
-            pesos.sort((a, b) => {
-                let pesoA = parseInt(a.weight);
-                let pesoB = parseInt(b.weight);
+            ordPeso.sort((a, b) => {
+                let pesoA = parseInt(a.weight ? a.weight : a.weight_min);
+                let pesoB = parseInt(b.weight ? b.weight : b.weight_min);
                 if (pesoA > pesoB) {
                     return 1;
                 }
@@ -64,9 +71,9 @@ export default function reducer(state = initialState, action) {
                 }
                 return 0;
             }) 
-            : pesos.sort((a, b) => {
-                let pesoA = parseInt(a.weight);
-                let pesoB = parseInt(b.weight);
+            : ordPeso.sort((a, b) => {
+                let pesoA = parseInt(a.weight ? a.weight : a.weight_min);
+                let pesoB = parseInt(b.weight ? b.weight : b.weight_min);
                 if (pesoA > pesoB) {
                     return -1;
                 }
@@ -74,6 +81,10 @@ export default function reducer(state = initialState, action) {
                     return 1;
                 }
                 return 0;
+            })
+
+            nanArr.forEach(elem => {
+                sortPeso.push(elem)
             })
 
             return {
