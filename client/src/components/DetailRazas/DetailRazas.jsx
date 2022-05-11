@@ -14,10 +14,11 @@ export default function DetailRazas() {
             })
         // eslint-disable-next-line
     }, [])
-
+    console.log(razaId)
     return <div>
         {razaId ?
             <div>
+                {!razaId[0].temperament ? razaId[0].temperament = ' This breed dont have temperaments' : ''}
                 <img className={styles.imgRaza} src={razaId[0].img} alt={razaId[0].name} />
                 <h2>{razaId[0].name}</h2>
                 <h4>Temperaments: {razaId[0].temperament ? razaId[0].temperament : razaId[0].temperamentos.map(elem => elem.nameTemp + ', ')}</h4>
