@@ -79,7 +79,7 @@ describe('Raza model', () => {
       }),
 
       describe('img', () => {
-        it('should throw an error if lenght img is not a string', (done) => {
+        it('should throw an error if img is not a string', (done) => {
           Raza.create({})
             .then(() => done(new Error('It requires a valid img')))
             .catch(() => done());

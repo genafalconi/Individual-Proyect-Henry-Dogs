@@ -55,8 +55,8 @@ export default function reducer(state = initialState, action) {
             let ordPeso = []
 
             pesos.forEach(elem => {
-                if(elem.weight ? elem.weight !== 'NaN' : elem.weight_min !== 'NaN') ordPeso.push(elem)
-                else nanArr.push(elem)
+                if(elem.weight === 'NaN') nanArr.push(elem)
+                else ordPeso.push(elem)
             })
             
             let sortPeso = action.payload === ASCENDENTE ?
