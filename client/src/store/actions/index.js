@@ -7,6 +7,7 @@ export const ORD_PESO = 'ORD_PESO';
 export const DETAIL_RAZA = 'DETAIL_RAZA';
 export const CREATE_RAZA = 'CREATE_RAZA';
 export const GET_TEMPERAMENT = 'GET_TEMPERAMENT';
+export const DELETE_RAZA = 'DELETE_RAZA';
 
 const routeRaza = '/dogs';
 const routeRazaCreate = '/dogs/dog';

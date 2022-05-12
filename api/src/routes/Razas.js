@@ -113,8 +113,6 @@ router.get('/:idRaza', async (req, res, next) => {
         if (idRaza) {
             let razaId = await allRazas.filter(elem => elem.id == idRaza)
 
-            console.log(razaId[0])
-            if(!razaId[0].temperament) razaId[0].temperament = 'This breed dont have temperaments'
             if (razaId.length) return res.json(razaId)
             else return res.json({ message: 'There is not a breed with that id' });
         } else {
@@ -135,22 +133,24 @@ router.get('/:idRaza', async (req, res, next) => {
     }
 });
 
-router.delete('/', async (req, res, next) => {
-    console.log('entre')
-    try {
-        const { idRaza } = req.query;
-        console.log(idRaza)
-        const allRazas = await getAllRazas();
-        if (idRaza) {
-            let delRaza = allRazas.filter(elem => elem.id !== idRaza)
-            console.log(delRaza)
-            res.json(delRaza)
-        }
-    } catch (error) {
-        next(error)
-    }
+// router.delete('/', async (req, res, next) => {
+//     try {
+//         const { idRaza } = req.query;
+//         console.log(idRaza)
+//         const allRazas = await getAllRazas();
+//         if (idRaza) {
 
 
-})
+
+//             let delRaza = allRazas.filter(elem => elem.id !== idRaza)
+//             console.log(delRaza)
+//             res.json(delRaza)
+//         }
+//     } catch (error) {
+//         next(error)
+//     }
+
+
+// })
 
 module.exports = router;

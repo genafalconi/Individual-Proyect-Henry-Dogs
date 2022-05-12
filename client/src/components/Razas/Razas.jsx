@@ -47,7 +47,7 @@ export default function Razas() {
 
     return (
         <div>
-            <div>
+            <div className={styles.primaryDiv}>
                 <label>Alfabetic: </label>
                 <select name="ordenes" onChange={onChangeAlf}>
                     <option>Select</option>
@@ -71,8 +71,7 @@ export default function Razas() {
                 {currRazas.length === 0 && <div>
                     <h2>There is not a breed compatible with that search</h2>
                     <BotonReloadRaza/>
-                </div>
-                }
+                </div>}
             </div>
             <div>
                 <Pagination key={currPage} razPerPage={razPerPage} razas={lenghtRazas} paginado={paginado} />
