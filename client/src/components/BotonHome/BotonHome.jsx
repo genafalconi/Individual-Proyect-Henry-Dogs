@@ -12,7 +12,7 @@ export default function BotonHome(){
     return <div className={styles.container}>
         <h1>WELCOME TO MY PI</h1>
         <img className={styles.img} src={img} alt="dogHome" />
-        <Link to='/dogs'><button className={styles.button} onClick={ppalRoute}>Acceder</button></Link>
+        <Link to='/dogs'><button className={styles.button} onClick={ppalRoute}>Access</button></Link>
     </div>
 }
 

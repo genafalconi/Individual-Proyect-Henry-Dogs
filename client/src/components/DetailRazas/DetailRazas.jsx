@@ -15,14 +15,12 @@ export default function DetailRazas() {
         // eslint-disable-next-line
     }, [])
 
-    console.log(razaId)
-   
     return <div>
         {razaId ?
             <div>
+                {!razaId[0].temperament && !razaId[0].temperamentos ? razaId[0].temperament = 'This breed do not have temperaments' : ''}
                 <img className={styles.imgRaza} src={razaId[0].img} alt={razaId[0].name} />
                 <h2>{razaId[0].name}</h2>
-                {!razaId[0].temperament && razaId[0].temperamentos.length === 0 ? razaId[0].temperamentos.push({nameTemp: 'This breed do not have temperaments'}) : ''}
                 <h4>Temperaments: {razaId[0].temperament ? razaId[0].temperament : razaId[0].temperamentos.map(elem => elem.nameTemp + ', ')}</h4>
                 <h4>Height: ({razaId[0].height ? razaId[0].height : razaId[0].height = razaId[0].height_min + ' - ' + razaId[0].height_max})cm</h4>
                 <h4>Weight: ({razaId[0].weight ? razaId[0].weight : razaId[0].weight = razaId[0].weight_min + ' - ' + razaId[0].weight_max})kg</h4>

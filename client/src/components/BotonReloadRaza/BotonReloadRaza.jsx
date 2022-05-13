@@ -11,6 +11,6 @@ export default function BotonReloadRaza() {
     }
 
     return <div>
-        <button onClick={handleClick}>Recargar razas</button>
+        <button onClick={handleClick}>Reload breeds</button>
     </div>
 }

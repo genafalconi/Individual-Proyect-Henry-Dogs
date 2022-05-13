@@ -51,14 +51,14 @@ export default function Razas() {
                 <label>Alfabetic: </label>
                 <select name="ordenes" onChange={onChangeAlf}>
                     <option>Select</option>
-                    <option value={ASCENDENTE}>Ascendente</option>
-                    <option value={DESCENDENTE}>Descendente</option>
+                    <option value={ASCENDENTE}>Asc</option>
+                    <option value={DESCENDENTE}>Desc</option>
                 </select>
                 <label> Weight: </label>
                 <select name="ordenes" onChange={onChangePeso}>
                     <option>Select</option>
-                    <option value={ASCENDENTE}>Ascendente</option>
-                    <option value={DESCENDENTE}>Descendente</option>
+                    <option value={ASCENDENTE}>Asc</option>
+                    <option value={DESCENDENTE}>Desc</option>
                 </select>
             </div>
             <br />

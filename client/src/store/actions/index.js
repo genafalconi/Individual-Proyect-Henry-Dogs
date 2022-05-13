@@ -8,6 +8,7 @@ export const DETAIL_RAZA = 'DETAIL_RAZA';
 export const CREATE_RAZA = 'CREATE_RAZA';
 export const GET_TEMPERAMENT = 'GET_TEMPERAMENT';
 export const DELETE_RAZA = 'DELETE_RAZA';
+export const RELOAD_RAZAS = 'RELOAD_RAZAS';
 
 const routeRaza = '/dogs';
 const routeRazaCreate = '/dogs/dog';
