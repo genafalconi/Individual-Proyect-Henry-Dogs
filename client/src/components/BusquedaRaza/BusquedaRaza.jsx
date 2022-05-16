@@ -3,7 +3,7 @@ import { searchRazas } from '../../store/actions';
 import { useDispatch } from 'react-redux';
 import styles from './BusquedaRaza.module.css';
 
-export default function Busqueda() {
+export default function BusquedaRaza({ setCurrPage }) {
     const [search, setSearch] = useState('');
     
     const onChange = (event) => {
@@ -14,6 +14,7 @@ export default function Busqueda() {
     const onSubmit = (event) => {
         event.preventDefault()
         dispatch(searchRazas(search))
+        setCurrPage(1)
         setSearch('')
     }
     return <div className={styles.navSearch}>

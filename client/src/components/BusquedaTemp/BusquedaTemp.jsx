@@ -3,7 +3,7 @@ import { searchTemperamentos } from '../../store/actions';
 import { useDispatch } from 'react-redux';
 import styles from './BusquedaTemp.module.css';
 
-export default function Busqueda() {
+export default function BusquedaTemp({ setCurrPage }) {
     const [search, setSearch] = useState('');
 
     const onChange = (event) => {
@@ -14,6 +14,7 @@ export default function Busqueda() {
     const onSubmit = (event) => {
         event.preventDefault()
         dispatch(searchTemperamentos(search))
+        setCurrPage(1)
         setSearch('')
     }
     

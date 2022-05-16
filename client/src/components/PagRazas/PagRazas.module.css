@@ -4,6 +4,12 @@
     text-shadow: 5px 5px 5px #001523;
 }
 
+.order {
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+}
+
 .search {
     display: flex;
     position: sticky;
@@ -18,3 +24,4 @@
 .create {
     float: left;
 }
+

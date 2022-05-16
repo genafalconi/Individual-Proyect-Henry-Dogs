@@ -1,66 +1,22 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ASCENDENTE, DESCENDENTE } from "../../Constants/order";
-import { axiosRazas, ordAlfabetic, ordPeso } from "../../store/actions";
-import Pagination from "../Paginate/Pagination";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { axiosRazas } from "../../store/actions";
 import Raza from '../Raza/Raza';
 import styles from './Razas.module.css';
 import BotonReloadRaza from "../BotonReloadRaza/BotonReloadRaza";
 
-export default function Razas() {
+
+export default function Razas({ currRazas }) {
 
     let dispatch = useDispatch();
-    let razas = useSelector((state) => state.filtRazas);
-    let lenghtRazas = Object.keys(razas).length
-
-    const [currPage, setCurrPage] = useState(1);
-    const [razPerPage] = useState(8);
-    // eslint-disable-next-line
-    const [order, setOrder] = useState('');
-    const indexLastRaza = currPage * razPerPage;
-    const indexFirstRaza = indexLastRaza - razPerPage;
-
-    const currRazas = razas.slice(indexFirstRaza, indexLastRaza);
-
-    const paginado = (pageNum) => {
-        setCurrPage(pageNum);
-    }
 
     useEffect(() => { // fill the state when the component is mount
         dispatch(axiosRazas());
         // eslint-disable-next-line
     }, [])
 
-    function onChangeAlf(event) {
-        event.preventDefault();
-        dispatch(ordAlfabetic(event.target.value));
-        setCurrPage(1)
-        setOrder(`Ordenado ${event.target.value}`)
-    }
-
-    function onChangePeso(event) {
-        event.preventDefault();
-        dispatch(ordPeso(event.target.value));
-        setCurrPage(1)
-        setOrder(`Ordenado ${event.target.value}`)
-    }
-
     return (
         <div>
-            <div className={styles.primaryDiv}>
-                <label>Alfabetic: </label>
-                <select name="ordenes" onChange={onChangeAlf}>
-                    <option>Select</option>
-                    <option value={ASCENDENTE}>Asc</option>
-                    <option value={DESCENDENTE}>Desc</option>
-                </select>
-                <label> Weight: </label>
-                <select name="ordenes" onChange={onChangePeso}>
-                    <option>Select</option>
-                    <option value={ASCENDENTE}>Asc</option>
-                    <option value={DESCENDENTE}>Desc</option>
-                </select>
-            </div>
             <br />
             <div className={styles.grid}>
                 {currRazas.map((r) => {
@@ -70,12 +26,12 @@ export default function Razas() {
             <div>
                 {currRazas.length === 0 && <div>
                     <h2>There is not a breed compatible with that search</h2>
-                    <BotonReloadRaza/>
+                    <BotonReloadRaza />
                 </div>}
             </div>
-            <div>
+            {/* <div>
                 <Pagination key={currPage} razPerPage={razPerPage} razas={lenghtRazas} paginado={paginado} />
-            </div>
+            </div> */}
         </div>
     )
 }

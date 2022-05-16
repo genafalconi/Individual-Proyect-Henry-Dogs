@@ -36,10 +36,16 @@ export default function CreateRaza() {
     }
 
     function handleSelect(event) {
-        setInput({
-            ...input,
-            temperament: [...input.temperament, event.target.value]
-        })
+        if(input.temperament.indexOf(event.target.value) === -1){
+            setInput({
+                ...input,
+                temperament: [...input.temperament, event.target.value]
+            })
+        }
+    }
+
+    function onClickDel(event) {
+        input.temperament.filter(elem => elem !== event.target.value)
     }
 
     function handleSubmit(event) {
@@ -123,7 +129,8 @@ export default function CreateRaza() {
                         ))}
                     </select>
                 </div>
-                <ul className={styles.temperaments} key={'ul'}><li key={(e) => e++}>{input.temperament.map(el => el + ', ')}</li></ul>
+                
+                <ul className={styles.temperaments} key={'ul'}><li key={(e) => e++}>{input.temperament.map(el => <li onClick={(e) => onClickDel(e)}>{el}</li>)}</li></ul>
             </div>
             <br />
             <div className={styles.buttonsFinal}>
